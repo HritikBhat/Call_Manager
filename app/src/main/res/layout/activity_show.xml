@@ -1,5 +1,5 @@
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -25,9 +25,9 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="90dp">
 
         <ListView
             android:id="@+id/list_view"
@@ -37,11 +37,15 @@
             android:layout_centerHorizontal="true">
         </ListView>
     </LinearLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         android:clickable="true"
-        android:layout_gravity="end|top"
-        android:src="@android:drawable/ic_input_add"/>
-</LinearLayout>
+        android:src="@drawable/ic_add_person_light"
+        app:backgroundTint="#2196F3" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

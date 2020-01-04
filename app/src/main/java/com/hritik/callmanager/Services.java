@@ -45,12 +45,15 @@ public class Services extends AppCompatActivity {
     }
 
     public void delete(String num1) {
-        MyHelper dpHelper = new MyHelper(this);
-        SQLiteDatabase db = dpHelper.getWritableDatabase();
-        db.delete("callmg", "phone=" + num1, null);
-        System.out.println("Delete");
-        db.close();
-        dpHelper.close();
+        try {
+            MyHelper dpHelper = new MyHelper(this);
+            SQLiteDatabase db = dpHelper.getWritableDatabase();
+            db.delete("callmg", "phone=" + num1, null);
+            System.out.println("Delete");
+            db.close();
+            dpHelper.close();
+        }
+        catch (Exception e){}
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {

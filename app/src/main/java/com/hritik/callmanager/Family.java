@@ -49,12 +49,13 @@ public class Family extends Activity {
         startActivity(i);
     }
     public void delete(String num1) {
-        MyHelper dpHelper = new MyHelper(this);
-        SQLiteDatabase db = dpHelper.getWritableDatabase();
-        db.delete("callmg", "phone=" + num1, null);
-        System.out.println("Delete");
-        db.close();
-        dpHelper.close();
+            MyHelper dpHelper = new MyHelper(this);
+            SQLiteDatabase db = dpHelper.getWritableDatabase();
+            //Error cause database delete
+            db.execSQL("DELETE FROM callmg WHERE phone='"+num1+"'");
+            System.out.println("Delete");
+            db.close();
+            dpHelper.close();
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
