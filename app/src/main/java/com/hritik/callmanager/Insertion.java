@@ -134,18 +134,18 @@ public class Insertion extends AppCompatActivity {
         }
         else{write_con();}
     }
-    protected void ask_per_conread(){
+    protected boolean ask_per_conread(){
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_CONTACTS}, 100);
             if(ask_per_count>=2){
                 ask_per_count=0;
-                return;
+                return false;
             }
             ask_per_count+=1;
             ask_per_conread();
         }
-        else{return;}
-
+        else{return true;}
+        return false;
     }
     private void write_con(){
             //Writes the contact
@@ -229,7 +229,7 @@ public class Insertion extends AppCompatActivity {
         switch (reqCode) {
             case (PICK_CONTACT) :
                 if (resultCode == RESULT_OK) {
-                    ask_per_conread();
+                    if(ask_per_conread()){
                     Uri contactData = data.getData();
                     Cursor c =  getContentResolver().query(contactData, null, null, null, null);
                     if (c.moveToFirst()) {
@@ -250,6 +250,7 @@ public class Insertion extends AppCompatActivity {
                             phone.setText(cNumber);
                         }
 
+                    }
                     }
                 }
                 break;
