@@ -27,12 +27,12 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/best"
+            android:id="@+id/friends"
             android:layout_width="132dp"
             android:layout_height="128dp"
             android:layout_marginLeft="15dp"
             android:background="@color/taskbarcolor"
-            android:text="Besties"
+            android:text="Friends"
             android:textColor="#F3F1F2"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -45,12 +45,12 @@
         android:layout_marginTop="40dp">
 
         <Button
-            android:id="@+id/friend"
+            android:id="@+id/services"
             android:layout_width="132dp"
             android:layout_height="128dp"
             android:layout_marginRight="15dp"
             android:background="@color/taskbarcolor"
-            android:text="Friends"
+            android:text="Services"
             android:textColor="#FCFAFA"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -64,7 +64,8 @@
             android:text="Office"
             android:textColor="#F3F1F2"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
     </LinearLayout>
 
 </LinearLayout>

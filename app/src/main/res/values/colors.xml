@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#5DBCD2</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimaryDark">#1C95B1</color>
     <color name="colorAccent">#D81B60</color>
     <color name="taskbarcolor">#5DBCD2</color>
 </resources>
