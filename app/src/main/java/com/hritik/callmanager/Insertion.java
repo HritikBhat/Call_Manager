@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,10 +29,11 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class Insertion extends AppCompatActivity {
-    Button submit;
+    Button submit,contact;
     EditText name,phone;
     RadioGroup grp;
     String selRadio;
+    private final int PICK_CONTACT=1;
 
     private void addContact(String name, String phone) {
 
@@ -132,6 +134,19 @@ public class Insertion extends AppCompatActivity {
         }
         else{write_con();}
     }
+    protected void ask_per_conread(){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_CONTACTS}, 100);
+            if(ask_per_count>=2){
+                ask_per_count=0;
+                return;
+            }
+            ask_per_count+=1;
+            ask_per_conread();
+        }
+        else{return;}
+
+    }
     private void write_con(){
             //Writes the contact
             addAsContactAutomatic(this,name.getText().toString(),phone.getText().toString());
@@ -162,6 +177,7 @@ public class Insertion extends AppCompatActivity {
         name=findViewById(R.id.name);
         phone=findViewById(R.id.phone);
         grp=findViewById(R.id.grp);
+        contact=findViewById(R.id.contacts);
         switch(cat){
             case "Office":
                 selRadio= getObj(R.id.office).getText().toString();
@@ -176,7 +192,6 @@ public class Insertion extends AppCompatActivity {
                 selRadio= getObj(R.id.family).getText().toString();
                 break;
         }
-
         grp.setOnCheckedChangeListener(
                 new RadioGroup
                         .OnCheckedChangeListener() {
@@ -185,7 +200,6 @@ public class Insertion extends AppCompatActivity {
                     public void onCheckedChanged(RadioGroup group,
                                                  int checkedId)
                     {
-
                         // Get the selected Radio Button
                         RadioButton
                                 radioButton
@@ -198,13 +212,47 @@ public class Insertion extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 alert_Dialog();
-                /*
-                Intent intent = new Intent(Intent.ACTION_INSERT);
-                intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
-                intent.putExtra(ContactsContract.Intents.Insert.NAME, name.getText().toString());
-                intent.putExtra(ContactsContract.Intents.Insert.PHONE, phone.getText().toString());
-                startActivity(intent);*/
             }
         });
+        contact.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                //Here requestCode means how many contacts you can selects...
+                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                startActivityForResult(intent,PICK_CONTACT);
+            }
+        });
+    }
+    @Override
+    public void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+
+        switch (reqCode) {
+            case (PICK_CONTACT) :
+                if (resultCode == RESULT_OK) {
+                    ask_per_conread();
+                    Uri contactData = data.getData();
+                    Cursor c =  getContentResolver().query(contactData, null, null, null, null);
+                    if (c.moveToFirst()) {
+                        String id =c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
+
+                        String hasPhone =c.getString(c.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+
+                        if (hasPhone.equalsIgnoreCase("1")) {
+                            Cursor phones = getContentResolver().query(
+                                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,
+                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ id,
+                                    null, null);
+                            phones.moveToFirst();
+                            String cNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                            System.out.println("number is:"+cNumber);
+                            String name_p = c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                            name.setText(name_p);
+                            phone.setText(cNumber);
+                        }
+
+                    }
+                }
+                break;
+        }
     }
 }
