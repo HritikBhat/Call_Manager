@@ -44,7 +44,7 @@ public class Friends extends AppCompatActivity {
         try {
             MyHelper dpHelper = new MyHelper(this);
             SQLiteDatabase db = dpHelper.getWritableDatabase();
-            db.delete("callmg", "phone=" + num1, null);
+            db.execSQL("DELETE FROM callmg WHERE phone='"+num1+"'");
             System.out.println("Delete");
             db.close();
             dpHelper.close();
