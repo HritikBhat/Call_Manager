@@ -41,5 +41,10 @@ public class MyHelper extends SQLiteOpenHelper
         Cursor  cursor = db.rawQuery(query,null);
         return cursor.getCount();
     }
+    public void onDelete(String phone_num){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM callmg WHERE TRIM(phone) = '" + phone_num.trim() + "'";
+        Cursor  cursor = db.rawQuery(query,null);
+    }
 }
 

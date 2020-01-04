@@ -48,7 +48,14 @@ public class Family extends Activity {
         }
         startActivity(i);
     }
-
+    public void delete(String num1) {
+        MyHelper dpHelper = new MyHelper(this);
+        SQLiteDatabase db = dpHelper.getWritableDatabase();
+        db.delete("callmg", "phone=" + num1, null);
+        System.out.println("Delete");
+        db.close();
+        dpHelper.close();
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,19 +76,38 @@ public class Family extends Activity {
         }
         catch (Exception e){e.printStackTrace();}
 
-
-        // Listview Data
-        //family.add("Dad");
-        //family.add("Mom");
-        //num.add("9221283246");
-        //num.add("9221283248");
-
         lv = (ListView) findViewById(R.id.list_view);
         inputSearch = (EditText) findViewById(R.id.search);
 
         // Adding items to listview
         adapter = new ArrayAdapter<String>(this, R.layout.list_item, R.id.product_name, family);
         lv.setAdapter(adapter);
+
+        SwipeDismissListViewTouchListener touchListener =
+                new SwipeDismissListViewTouchListener(
+                        lv,
+                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                            @Override
+                            public boolean canDismiss(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+
+                                    //On Dismiss
+                                    delete(num.get(position));
+                                    family.remove(position);
+
+                                    adapter.notifyDataSetChanged();
+
+                                }
+
+
+                            }
+                        });
+        lv.setOnTouchListener(touchListener);
 
         inputSearch.addTextChangedListener(new TextWatcher() {
 

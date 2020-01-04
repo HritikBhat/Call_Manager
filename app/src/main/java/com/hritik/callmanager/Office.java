@@ -44,6 +44,14 @@ public class Office extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void delete(String num1) {
+        MyHelper dpHelper = new MyHelper(this);
+        SQLiteDatabase db = dpHelper.getWritableDatabase();
+        db.delete("callmg", "phone=" + num1, null);
+        System.out.println("Delete");
+        db.close();
+        dpHelper.close();
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,13 +71,6 @@ public class Office extends AppCompatActivity {
         }
         catch (Exception e){e.printStackTrace();}
 
-
-        // Listview Data
-        //family.add("Dad");
-        //family.add("Mom");
-        //num.add("9221283246");
-        //num.add("9221283248");
-
         lv = (ListView) findViewById(R.id.list_view);
         inputSearch = (EditText) findViewById(R.id.search);
 
@@ -77,6 +78,33 @@ public class Office extends AppCompatActivity {
         adapter = new ArrayAdapter<String>(this, R.layout.list_item, R.id.product_name, office);
         lv.setAdapter(adapter);
 
+        //Swipe to delete feature code
+        SwipeDismissListViewTouchListener touchListener =
+                new SwipeDismissListViewTouchListener(
+                        lv,
+                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                            @Override
+                            public boolean canDismiss(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+
+                                    //On Dismiss
+                                    delete(num.get(position));
+                                    office.remove(position);
+                                    adapter.notifyDataSetChanged();
+
+                                }
+
+
+                            }
+                        });
+        lv.setOnTouchListener(touchListener);
+
+        //Search textbox code
         inputSearch.addTextChangedListener(new TextWatcher() {
 
             @Override
