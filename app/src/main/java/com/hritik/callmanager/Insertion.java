@@ -141,9 +141,7 @@ public class Insertion extends AppCompatActivity {
     private void register(){
         MyHelper dpHelper = new MyHelper(this);
         SQLiteDatabase db = dpHelper.getReadableDatabase();
-        int AUTOINCREMENT=dpHelper.getRows()+1;
         ContentValues insertValues = new ContentValues();
-        insertValues.put("cid", AUTOINCREMENT);
         insertValues.put("name", name.getText().toString());
         insertValues.put("category", selRadio);
         insertValues.put("phone", phone.getText().toString());

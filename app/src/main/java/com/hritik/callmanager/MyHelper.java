@@ -15,7 +15,7 @@ public class MyHelper extends SQLiteOpenHelper
     }
     public void onCreate(SQLiteDatabase db){
         try {
-            db.execSQL("create table callmg(cid int PRIMARY KEY,name text,category text,phone text)");
+            db.execSQL("create table callmg(name text,category text,phone text)");
             //db.execSQL("CREATE UNIQUE INDEX idx_category ON callmg(category);");
         } catch (SQLiteException e) {
             try {
