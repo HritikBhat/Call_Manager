@@ -1,6 +1,9 @@
 package com.hritik.callmanager;
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -12,7 +15,9 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -27,11 +32,11 @@ public class Section extends Activity {
     // List view
     ListView lv;
     String cat;
-
+    Context context=this;
     // Search EditText
+    ImageButton bin;
     EditText inputSearch;
     ArrayList<String> num,nameAr;
-    ImageView image;
     ArrayAdapter<String> adapter;
 
     // ArrayList for Listview
@@ -43,6 +48,21 @@ public class Section extends Activity {
             return;
         }
         startActivity(i);
+    }
+    public void main_Intent(){
+        Intent i2 = new Intent(getApplicationContext(),MainActivity.class);
+        startActivity(i2);
+    }
+    public void delete_grp(){
+        MyHelper dpHelper = new MyHelper(this);
+        SQLiteDatabase db = dpHelper.getWritableDatabase();
+        //Error cause database delete
+        db.execSQL("DELETE FROM callmg WHERE category='"+cat+"'");
+        db.execSQL("DELETE FROM catnm WHERE cname='"+cat+"'");
+        System.out.println("Delete GRP");
+        db.close();
+        dpHelper.close();
+        main_Intent();
     }
     public void delete(String num1) {
         MyHelper dpHelper = new MyHelper(this);
@@ -60,6 +80,7 @@ public class Section extends Activity {
         MyHelper dpHelper = new MyHelper(this);
         SQLiteDatabase db = dpHelper.getReadableDatabase();
 
+        bin=findViewById(R.id.bin);
         nameAr = new ArrayList<String>();
         num= new ArrayList<String>();
         Intent inr=getIntent();
@@ -145,6 +166,28 @@ public class Section extends Activity {
                 Intent i = new Intent(getApplicationContext(),Insertion.class);
                 i.putExtra("cat", cat);
                 startActivity(i);
+            }
+        });
+        bin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Dialog
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                delete_grp();
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Are you sure you want to delete "+cat+"?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
             }
         });
     }}
