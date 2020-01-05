@@ -16,6 +16,7 @@ public class MyHelper extends SQLiteOpenHelper
     public void onCreate(SQLiteDatabase db){
         try {
             db.execSQL("create table callmg(name text,category text,phone text)");
+            db.execSQL("create table catnm(cname text)");
             //db.execSQL("CREATE UNIQUE INDEX idx_category ON callmg(category);");
         } catch (SQLiteException e) {
             try {
@@ -35,6 +36,14 @@ public class MyHelper extends SQLiteOpenHelper
         Cursor  cursor = db.rawQuery(query,null);
         return cursor;
     }
+
+    public Cursor getCategoryNames(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT cname FROM catnm";
+        Cursor  cursor = db.rawQuery(query,null);
+        return cursor;
+    }
+
     public int getRows(){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM callmg";

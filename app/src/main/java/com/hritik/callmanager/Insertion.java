@@ -31,8 +31,7 @@ import java.util.ArrayList;
 public class Insertion extends AppCompatActivity {
     Button submit,contact;
     EditText name,phone;
-    RadioGroup grp;
-    String selRadio;
+    String cat;
     private final int PICK_CONTACT=1;
     private static void addAsContactAutomatic(final Context context, String name ,String mobile) {
         String displayName = name;
@@ -145,56 +144,21 @@ public class Insertion extends AppCompatActivity {
         SQLiteDatabase db = dpHelper.getReadableDatabase();
         ContentValues insertValues = new ContentValues();
         insertValues.put("name", name.getText().toString());
-        insertValues.put("category", selRadio);
+        insertValues.put("category", cat);
         insertValues.put("phone", phone.getText().toString());
         long rows =db.insert("callmg", null, insertValues);
         System.out.println(rows);
         //Permission is being asked
     }
-    public RadioButton getObj(int radio_id){
-        grp.check(radio_id);
-        return (RadioButton)grp.findViewById(radio_id);
-    }
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insertion);
         Intent i=getIntent();
-        String cat = i.getExtras().getString("cat");
+        cat = i.getExtras().getString("cat");
         submit=findViewById(R.id.submit);
         name=findViewById(R.id.name);
         phone=findViewById(R.id.phone);
-        grp=findViewById(R.id.grp);
         contact=findViewById(R.id.contacts);
-        switch(cat){
-            case "Office":
-                selRadio= getObj(R.id.office).getText().toString();
-                break;
-            case "Services":
-                selRadio= getObj(R.id.services).getText().toString();
-                break;
-            case "Friends":
-                selRadio= getObj(R.id.friends).getText().toString();
-                break;
-            case "Family":
-                selRadio= getObj(R.id.family).getText().toString();
-                break;
-        }
-        grp.setOnCheckedChangeListener(
-                new RadioGroup
-                        .OnCheckedChangeListener() {
-                    @Override
-                    // Check which radio button has been clicked
-                    public void onCheckedChanged(RadioGroup group,
-                                                 int checkedId)
-                    {
-                        // Get the selected Radio Button
-                        RadioButton
-                                radioButton
-                                = (RadioButton)group
-                                .findViewById(checkedId);
-                        selRadio= radioButton.getText().toString();
-                    }
-                });
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

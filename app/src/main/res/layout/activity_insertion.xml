@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center_horizontal"
     tools:context=".Insertion">
     <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:layout_marginHorizontal="50dp"
-    android:layout_marginTop="50dp">
+    android:layout_marginTop="75dp">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,9 +56,8 @@
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        >
+        android:layout_marginTop="35dp"
+        android:gravity="center_horizontal">
             <Button
                 android:id="@+id/contacts"
                 android:layout_width="wrap_content"
@@ -68,60 +68,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginHorizontal="50dp"
-        android:layout_marginTop="50dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Category:"
-            android:textStyle="bold"
-            android:textColor="@color/black2"
-            android:textSize="24dp"
-            android:layout_marginRight="15dp"/>
-        <RadioGroup
-            android:id="@+id/grp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textColor="@color/black2"
-            android:textSize="24dp" >
-            <RadioButton
-                android:id="@+id/family"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="Family"
-                android:textStyle="bold"
-                />
-            <RadioButton
-                android:id="@+id/friends"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="Friends"
-                android:textStyle="bold"
-                />
-            <RadioButton
-                android:id="@+id/services"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="Services"
-                android:textStyle="bold"
-                />
-            <RadioButton
-                android:id="@+id/office"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="Office"
-                android:textStyle="bold"
-                />
-        </RadioGroup>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="45dp"
         android:orientation="horizontal">
 
         <Button
