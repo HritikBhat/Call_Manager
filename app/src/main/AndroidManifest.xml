@@ -12,11 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Office"></activity>
-        <activity android:name=".Services" />
-        <activity android:name=".Friends" />
         <activity android:name=".Insertion" />
-        <activity android:name=".Family" />
+        <activity android:name=".Section" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

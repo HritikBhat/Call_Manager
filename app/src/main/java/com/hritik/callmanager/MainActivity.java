@@ -21,29 +21,34 @@ public class MainActivity extends AppCompatActivity {
         family.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(),Family.class);
+                Intent i = new Intent(getApplicationContext(),Section.class);
+                i.putExtra("cat","Family");
                 startActivity(i);
             }
         });
         friends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(),Friends.class);
+                Intent i = new Intent(getApplicationContext(),Section.class);
+                i.putExtra("cat","Friends");
                 startActivity(i);
             }
         });
         services.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(),Services.class);
+                Intent i = new Intent(getApplicationContext(),Section.class);
+                i.putExtra("cat","Services");
                 startActivity(i);
             }
         });
         office.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(),Office.class);
+                Intent i = new Intent(getApplicationContext(),Section.class);
+                i.putExtra("cat","Office");
                 startActivity(i);
+
             }
         });
     }
