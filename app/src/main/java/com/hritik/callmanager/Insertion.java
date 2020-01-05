@@ -34,19 +34,6 @@ public class Insertion extends AppCompatActivity {
     RadioGroup grp;
     String selRadio;
     private final int PICK_CONTACT=1;
-
-    private void addContact(String name, String phone) {
-
-        ContentValues values = new ContentValues();
-        values.put(Contacts.People.NUMBER,phone);
-        Uri dataUri = getContentResolver().insert(Contacts.People.CONTENT_URI, values);
-        Uri updateUri = Uri.withAppendedPath(dataUri, Contacts.People.Phones.CONTENT_DIRECTORY);
-        values.clear();
-        values.put(Contacts.People.Phones.TYPE, Contacts.People.TYPE_MOBILE);
-        values.put(Contacts.People.NUMBER, phone);
-        updateUri = getContentResolver().insert(updateUri, values);
-        Log.d("CONTACT", ""+updateUri);
-    }
     private static void addAsContactAutomatic(final Context context, String name ,String mobile) {
         String displayName = name;
         String mobileNumber = mobile;

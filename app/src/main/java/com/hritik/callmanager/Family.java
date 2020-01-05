@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -35,7 +36,7 @@ public class Family extends Activity {
     // Search EditText
     EditText inputSearch;
     ArrayList<String> num,family;
-
+    ImageView image;
     ArrayAdapter<String> adapter;
 
     // ArrayList for Listview

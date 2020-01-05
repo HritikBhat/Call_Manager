@@ -5,13 +5,32 @@
     android:orientation="vertical" >
 
     <!-- Single ListItem -->
-
     <!-- Product Name -->
-    <TextView android:id="@+id/product_name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dip"
-        android:textSize="16dip"
-        android:textStyle="bold"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
 
+        <TextView
+            android:id="@+id/product_name"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="25dip"
+            android:text="Hello"
+            android:textColor="#0D0D0E"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/image_con"
+            android:layout_width="90dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="0dp"
+            android:layout_toEndOf="@+id/product_name"
+            android:layout_toRightOf="@+id/product_name"
+            android:src="@drawable/ic_contact_face"/>
+
+    </RelativeLayout>
 </LinearLayout>
