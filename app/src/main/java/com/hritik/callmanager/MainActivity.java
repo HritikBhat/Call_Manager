@@ -85,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
             });
             i+=1;
         }
-
         FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.addcat);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
