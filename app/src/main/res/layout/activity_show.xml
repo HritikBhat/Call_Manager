@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cord1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
@@ -15,13 +16,15 @@
 
         <EditText
             android:id="@+id/search"
+            android:inputType="none"
+            android:autofillHints=""
             android:layout_width="235dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="35sp"
             android:queryHint="Search...."
-            android:textSize="18dp"></EditText>
+            android:textSize="18dp"/>
 
         <ImageButton
             android:id="@+id/bin"

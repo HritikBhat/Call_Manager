@@ -32,7 +32,7 @@ public class MyHelper extends SQLiteOpenHelper
     }
     public Cursor alldata(String cat){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM callmg WHERE TRIM(category) = '" + cat.trim() + "'";
+        String query = "SELECT * FROM callmg WHERE TRIM(category) = '" + cat.trim() + "' ORDER BY name ASC";
         Cursor  cursor = db.rawQuery(query,null);
         return cursor;
     }

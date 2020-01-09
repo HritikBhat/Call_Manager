@@ -2,12 +2,14 @@ package com.hritik.callmanager;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -21,9 +23,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +42,7 @@ public class Section extends Activity {
     EditText inputSearch;
     ArrayList<String> num,nameAr;
     ArrayAdapter<String> adapter;
+    String t_name,t_number;
 
     // ArrayList for Listview
     ArrayList<HashMap<String, String>> productList;
@@ -73,13 +78,20 @@ public class Section extends Activity {
         db.close();
         dpHelper.close();
     }
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show);
+    private void insert(String name,String phone){
         MyHelper dpHelper = new MyHelper(this);
         SQLiteDatabase db = dpHelper.getReadableDatabase();
-
+        ContentValues insertValues = new ContentValues();
+        insertValues.put("name", name);
+        insertValues.put("category", cat);
+        insertValues.put("phone", phone);
+        long rows =db.insert("callmg", null, insertValues);
+        System.out.println(rows);
+        //Permission is being asked
+    }
+    public void update_listview(){
+        MyHelper dpHelper = new MyHelper(this);
+        SQLiteDatabase db = dpHelper.getReadableDatabase();
         bin=findViewById(R.id.bin);
         nameAr = new ArrayList<String>();
         num= new ArrayList<String>();
@@ -103,6 +115,14 @@ public class Section extends Activity {
         adapter = new ArrayAdapter<String>(this, R.layout.list_item, R.id.product_name, nameAr);
         lv.setAdapter(adapter);
 
+    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_show);
+        final CoordinatorLayout coordinatorLayout = (CoordinatorLayout)findViewById(R.id.cord1);
+        update_listview();
+        //Swipe
         SwipeDismissListViewTouchListener touchListener =
                 new SwipeDismissListViewTouchListener(
                         lv,
@@ -117,9 +137,25 @@ public class Section extends Activity {
                                 for (int position : reverseSortedPositions) {
 
                                     //On Dismiss
+                                    System.out.print("Deleted!");
+                                    t_number=num.get(position);
+                                    t_name=nameAr.get(position);
                                     delete(num.get(position));
                                     nameAr.remove(position);
 
+                                    Snackbar snackbar = Snackbar
+                                            .make(coordinatorLayout, "Contact has been deleted.", Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Contact is restored!", Snackbar.LENGTH_SHORT);
+                                                    insert(t_name,t_number);
+                                                    update_listview();
+                                                    snackbar1.show();
+                                                }
+                                            }).setActionTextColor(Color.WHITE);
+
+
+                                    snackbar.show();
                                     adapter.notifyDataSetChanged();
 
                                 }
