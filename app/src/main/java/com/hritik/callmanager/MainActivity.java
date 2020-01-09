@@ -8,9 +8,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -46,10 +48,19 @@ public class MainActivity extends AppCompatActivity {
             category.get(i).setText(cat_name);
             category.get(i).setBackgroundColor(getResources().getColor(R.color.taskbarcolor));
             System.out.println(i);
-            category.get(i).setHeight(358);
-            category.get(i).setWidth(362);
+            //category.get(i).setHeight(358);
+            //category.get(i).setWidth(362);
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int height = displayMetrics.heightPixels;
+            int width = displayMetrics.widthPixels;
+            //Toast.makeText(this, "Height: "+height+"  Width"+width, Toast.LENGTH_SHORT)
+              //      .show();
+            category.get(i).setHeight((int)(height/5));
+            category.get(i).setWidth((int)(width/3));
             category.get(i).setPadding(10,10,10,10);
             category.get(i).setTextSize(16);
+            //1184 x 720
             //category.get(i).setPadding(20);
             //category.get(i).setTypeface(Typeface.DEFAULT_BOLD);
             category.get(i).setTextColor(Color.parseColor("#F3F1F2"));
