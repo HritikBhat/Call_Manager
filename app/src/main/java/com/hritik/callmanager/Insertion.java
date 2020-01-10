@@ -145,7 +145,7 @@ public class Insertion extends AppCompatActivity {
         ContentValues insertValues = new ContentValues();
         insertValues.put("name", name.getText().toString());
         insertValues.put("category", cat);
-        insertValues.put("phone", phone.getText().toString());
+        insertValues.put("phone", (phone.getText().toString().replace("+91","")).trim());
         long rows =db.insert("callmg", null, insertValues);
         System.out.println(rows);
         //Permission is being asked
@@ -162,7 +162,15 @@ public class Insertion extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alert_Dialog();
+                if (phone.getText().toString().length()==10)
+                {
+                    alert_Dialog();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Invalid Phone Number", Toast.LENGTH_SHORT)
+                            .show();
+                }
+
             }
         });
         contact.setOnClickListener(new View.OnClickListener(){

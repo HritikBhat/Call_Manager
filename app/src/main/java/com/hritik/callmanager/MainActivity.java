@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         Cursor cursor =dpHelper.getCategoryNames();
         int i=0;
         int lt_counter=-1;
-        while(cursor.moveToNext()) {
+        while(cursor.moveToNext()){
             final String cat_name=cursor.getString(cursor.getColumnIndex("cname"));
             System.out.println(cat_name);
             category.add(new Button(this));

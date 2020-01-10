@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
@@ -29,12 +30,24 @@ public class NewCat extends AppCompatActivity {
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                MyHelper dpHelper = new MyHelper(getApplicationContext());
+                SQLiteDatabase db = dpHelper.getReadableDatabase();
+                Cursor cursor =dpHelper.getCategoryNames();
+                while(cursor.moveToNext()) {
+
+                    final String cat_name=cursor.getString(cursor.getColumnIndex("cname"));
+                    if (cat_name.equalsIgnoreCase(cate.getText().toString()))
+                    {
+                        Toast.makeText(c, "This group name is already exists!!", Toast.LENGTH_SHORT)
+                                .show();
+                        return;
+                    }
+                }
                 if(cate.getText().toString().length()<1){
                     Toast.makeText(c, "Name is required!!!", Toast.LENGTH_SHORT)
                             .show();}
+
                 else{
-                MyHelper dpHelper = new MyHelper(c);
-                SQLiteDatabase db = dpHelper.getReadableDatabase();
                 ContentValues insertValues = new ContentValues();
                 insertValues.put("cname", cate.getText().toString());
                 long rows =db.insert("catnm", null, insertValues);

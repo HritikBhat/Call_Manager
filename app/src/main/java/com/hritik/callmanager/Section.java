@@ -120,110 +120,114 @@ public class Section extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show);
-        final CoordinatorLayout coordinatorLayout = (CoordinatorLayout)findViewById(R.id.cord1);
-        update_listview();
-        //Swipe
-        SwipeDismissListViewTouchListener touchListener =
-                new SwipeDismissListViewTouchListener(
-                        lv,
-                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
-                            @Override
-                            public boolean canDismiss(int position) {
-                                return true;
-                            }
-
-                            @Override
-                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
-                                for (int position : reverseSortedPositions) {
-
-                                    //On Dismiss
-                                    System.out.print("Deleted!");
-                                    t_number=num.get(position);
-                                    t_name=nameAr.get(position);
-                                    delete(num.get(position));
-                                    nameAr.remove(position);
-
-                                    Snackbar snackbar = Snackbar
-                                            .make(coordinatorLayout, "Contact has been deleted.", Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View view) {
-                                                    Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Contact is restored!", Snackbar.LENGTH_SHORT);
-                                                    insert(t_name,t_number);
-                                                    update_listview();
-                                                    snackbar1.show();
-                                                }
-                                            }).setActionTextColor(Color.WHITE);
-
-
-                                    snackbar.show();
-                                    adapter.notifyDataSetChanged();
-
+        try {
+            final CoordinatorLayout coordinatorLayout = (CoordinatorLayout)findViewById(R.id.cord1);
+            update_listview();
+            //Swipe
+            SwipeDismissListViewTouchListener touchListener =
+                    new SwipeDismissListViewTouchListener(
+                            lv,
+                            new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                                @Override
+                                public boolean canDismiss(int position) {
+                                    return true;
                                 }
 
+                                @Override
+                                public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                                    for (int position : reverseSortedPositions) {
 
+                                        //On Dismiss
+                                        System.out.print("Deleted!");
+                                        t_number=num.get(position);
+                                        t_name=nameAr.get(position);
+                                        delete(num.get(position));
+                                        nameAr.remove(position);
+
+                                        Snackbar snackbar = Snackbar
+                                                .make(coordinatorLayout, "Contact has been deleted.", Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View view) {
+                                                        Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Contact is restored!", Snackbar.LENGTH_SHORT);
+                                                        insert(t_name,t_number);
+                                                        update_listview();
+                                                        snackbar1.show();
+                                                    }
+                                                }).setActionTextColor(Color.WHITE);
+
+
+                                        snackbar.show();
+                                        adapter.notifyDataSetChanged();
+
+                                    }
+
+
+                                }
+                            });
+            lv.setOnTouchListener(touchListener);
+
+            inputSearch.addTextChangedListener(new TextWatcher() {
+
+                @Override
+                public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                    // When user changed the Text
+                    Section.this.adapter.getFilter().filter(cs);
+                }
+
+                @Override
+                public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                              int arg3) {
+                    // TODO Auto-generated method stub
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable arg0) {
+                    // TODO Auto-generated method stub
+                }
+            });
+            lv.setClickable(true);
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position,
+                                        long id) {
+
+                    Intent i = new Intent(Intent.ACTION_CALL);
+                    i.setData(Uri.parse("tel:"+num.get(position)));
+                    permit(i,position);
+                }});
+
+            FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.fab);
+            myFab.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent i = new Intent(getApplicationContext(),Insertion.class);
+                    i.putExtra("cat", cat);
+                    startActivity(i);
+                }
+            });
+            bin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //Dialog
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    delete_grp();
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    break;
                             }
-                        });
-        lv.setOnTouchListener(touchListener);
-
-        inputSearch.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-                // When user changed the Text
-                Section.this.adapter.getFilter().filter(cs);
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-                                          int arg3) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable arg0) {
-                // TODO Auto-generated method stub
-            }
-        });
-        lv.setClickable(true);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
-                                    long id) {
-
-                Intent i = new Intent(Intent.ACTION_CALL);
-                i.setData(Uri.parse("tel:"+num.get(position)));
-                permit(i,position);
-            }});
-
-        FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.fab);
-        myFab.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(),Insertion.class);
-                i.putExtra("cat", cat);
-                startActivity(i);
-            }
-        });
-        bin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Dialog
-                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which){
-                            case DialogInterface.BUTTON_POSITIVE:
-                                delete_grp();
-                                break;
-
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                break;
                         }
-                    }
-                };
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Are you sure you want to delete "+cat+"?").setPositiveButton("Yes", dialogClickListener)
-                        .setNegativeButton("No", dialogClickListener).show();
-            }
-        });
+                    };
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage("Are you sure you want to delete "+cat+"?").setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
+                }
+            });
+        }
+        catch (Exception e){e.printStackTrace();}
+
     }}
