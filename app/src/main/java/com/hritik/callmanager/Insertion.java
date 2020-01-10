@@ -145,7 +145,7 @@ public class Insertion extends AppCompatActivity {
         ContentValues insertValues = new ContentValues();
         insertValues.put("name", name.getText().toString());
         insertValues.put("category", cat);
-        insertValues.put("phone", (phone.getText().toString().replace("+91","")).trim());
+        insertValues.put("phone",phone.getText().toString());
         long rows =db.insert("callmg", null, insertValues);
         System.out.println(rows);
         //Permission is being asked
@@ -167,7 +167,7 @@ public class Insertion extends AppCompatActivity {
                     alert_Dialog();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "Invalid Phone Number", Toast.LENGTH_SHORT)
+                    Toast.makeText(getApplicationContext(), "Number must contain 10 digits", Toast.LENGTH_SHORT)
                             .show();
                 }
 
