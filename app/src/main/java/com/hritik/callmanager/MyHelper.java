@@ -45,10 +45,12 @@ public class MyHelper extends SQLiteOpenHelper
     }
 
     public int getRows(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM callmg";
-        Cursor  cursor = db.rawQuery(query,null);
-        return cursor.getCount();
+        String countQuery = "SELECT  * FROM callmg";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
     }
     public void onDelete(String phone_num){
         SQLiteDatabase db = this.getWritableDatabase();

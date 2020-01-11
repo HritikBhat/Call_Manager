@@ -33,6 +33,7 @@ public class NewCat extends AppCompatActivity {
                 MyHelper dpHelper = new MyHelper(getApplicationContext());
                 SQLiteDatabase db = dpHelper.getReadableDatabase();
                 Cursor cursor =dpHelper.getCategoryNames();
+                int count_row=0;
                 while(cursor.moveToNext()) {
 
                     final String cat_name=cursor.getString(cursor.getColumnIndex("cname"));
@@ -40,12 +41,18 @@ public class NewCat extends AppCompatActivity {
                     {
                         Toast.makeText(c, "This group name is already exists!!", Toast.LENGTH_SHORT)
                                 .show();
+                        count_row++;
                         return;
                     }
+                    count_row++;
                 }
-                if(cate.getText().toString().length()<1){
+                if(cate.getText().toString().trim().length()<1){
                     Toast.makeText(c, "Name is required!!!", Toast.LENGTH_SHORT)
                             .show();}
+                if(count_row>=10){
+                    Toast.makeText(c, "Group Limit! Max 10", Toast.LENGTH_SHORT)
+                            .show();
+                }
 
                 else{
                 ContentValues insertValues = new ContentValues();

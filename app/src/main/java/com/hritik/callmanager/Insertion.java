@@ -29,7 +29,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class Insertion extends AppCompatActivity {
-    Button submit,contact;
+    Button submit,contact,mcontact;
     EditText name,phone;
     String cat;
     private final int PICK_CONTACT=1;
@@ -159,6 +159,7 @@ public class Insertion extends AppCompatActivity {
         name=findViewById(R.id.name);
         phone=findViewById(R.id.phone);
         contact=findViewById(R.id.contacts);
+        mcontact=findViewById(R.id.mcontacts);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,6 +179,14 @@ public class Insertion extends AppCompatActivity {
                 //Here requestCode means how many contacts you can selects...
                 Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
                 startActivityForResult(intent,PICK_CONTACT);
+            }
+        });
+        mcontact.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                //Here requestCode means how many contacts you can selects...
+                Intent i = new Intent(getApplicationContext(),selectContact.class);
+                i.putExtra("cat", cat);
+                startActivity(i);
             }
         });
     }

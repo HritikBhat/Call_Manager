@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NewCat"></activity>
+        <activity android:name=".selectContact"></activity>
+        <activity android:name=".NewCat" />
         <activity android:name=".Insertion" />
         <activity android:name=".Section" />
         <activity android:name=".MainActivity">
