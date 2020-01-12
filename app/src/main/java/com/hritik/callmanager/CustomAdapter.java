@@ -1,4 +1,5 @@
 package com.hritik.callmanager;
+
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -8,9 +9,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -108,7 +106,7 @@ public class CustomAdapter  extends BaseAdapter {
                 View tempview = (View) holder.checkBox.getTag(R.integer.btnplusview);
                 EditText tv = (EditText) tempview.findViewById(R.id.name_c);
                 Integer pos = (Integer)  holder.checkBox.getTag();
-                Toast.makeText(context, "Checkbox "+pos+" clicked!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, tv.getText()+" selected!", Toast.LENGTH_SHORT).show();
 
                 if(modelArrayList.get(pos).getSelected()){
                     modelArrayList.get(pos).setSelected(false);

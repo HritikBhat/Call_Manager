@@ -62,7 +62,7 @@
             android:id="@+id/next"
             android:background="#2196F3"
             android:textColor="@color/white"
-            android:text="Done!"/>
+            android:text="Submit!"/>
 
 
     </LinearLayout>

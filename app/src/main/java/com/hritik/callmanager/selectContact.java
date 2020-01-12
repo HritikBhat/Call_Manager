@@ -1,8 +1,5 @@
 package com.hritik.callmanager;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -10,17 +7,17 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -86,7 +83,7 @@ public class selectContact extends AppCompatActivity {
                 ContentValues insertValues = new ContentValues();
                 insertValues.put("name", CustomAdapter.modelArrayList.get(i).getName());
                 insertValues.put("category", cat);
-                insertValues.put("phone",ar_phone.get(i).replace("+91","").trim());
+                insertValues.put("phone",CustomAdapter.modelArrayList.get(i).getPhone().replace("+91","").replace(" ",""));
                 long rows =db.insert("callmg", null, insertValues);
             }
         }
@@ -165,6 +162,7 @@ public class selectContact extends AppCompatActivity {
         for(int i = 0; i < ar_name.size(); i++){
             Model model = new Model();
             model.setSelected(isSelect);
+            model.setPhone(ar_phone.get(i));
             model.setName(ar_name.get(i));
             list.add(model);
         }

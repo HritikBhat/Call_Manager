@@ -1,8 +1,5 @@
 package com.hritik.callmanager;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ContentProviderOperation;
@@ -16,15 +13,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
-import android.provider.Contacts;
 import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
 
@@ -215,7 +211,7 @@ public class Insertion extends AppCompatActivity {
                             System.out.println("number is:"+cNumber);
                             String name_p = c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
                             name.setText(name_p);
-                            phone.setText(cNumber);
+                            phone.setText(cNumber.replace("+91","").replace(" ",""));
                         }
 
                     }
