@@ -101,11 +101,11 @@ public class selectContact extends AppCompatActivity {
         }
         int same=0;
         for (int i = 0; i < CustomAdapter.modelArrayList.size(); i++){
-            if (contain(CustomAdapter.modelArrayList.get(i).getName(), nameAr) || contain(CustomAdapter.modelArrayList.get(i).getPhone(), num)) {
+            if ((contain(CustomAdapter.modelArrayList.get(i).getName(), nameAr) || contain(CustomAdapter.modelArrayList.get(i).getPhone().replace("+91",""), num))&&(CustomAdapter.modelArrayList.get(i).getSelected())) {
                 same+=1;
-                continue;
+                Toast.makeText(getApplicationContext(),CustomAdapter.modelArrayList.get(i).getName()+" "+CustomAdapter.modelArrayList.get(i).getPhone(),Toast.LENGTH_LONG).show();
             }
-            if(CustomAdapter.modelArrayList.get(i).getSelected()) {
+            else if(CustomAdapter.modelArrayList.get(i).getSelected()) {
                 ContentValues insertValues = new ContentValues();
                 insertValues.put("name", CustomAdapter.modelArrayList.get(i).getName());
                 insertValues.put("category", cat);
@@ -114,8 +114,9 @@ public class selectContact extends AppCompatActivity {
             }
         }
         if (same>0){
-            Toast.makeText(getApplicationContext(), "Names or Numbers already existing in " + cat.toUpperCase(), Toast.LENGTH_SHORT)
-                    .show();
+            //Toast.makeText(getApplicationContext(), "Names or Numbers already existing in " + cat.toUpperCase(), Toast.LENGTH_SHORT)
+                   // .show();
+
         }
         dpHelper.close();
         db.close();
