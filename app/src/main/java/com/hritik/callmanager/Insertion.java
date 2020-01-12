@@ -28,6 +28,8 @@ public class Insertion extends AppCompatActivity {
     Button submit,contact,mcontact;
     EditText name,phone;
     String cat;
+    ArrayList<String> nameAr= new ArrayList<String>();
+    ArrayList<String> num= new ArrayList<String>();
     private final int PICK_CONTACT=1;
     private static void addAsContactAutomatic(final Context context, String name ,String mobile) {
         String displayName = name;
@@ -146,11 +148,32 @@ public class Insertion extends AppCompatActivity {
         System.out.println(rows);
         //Permission is being asked
     }
+    public boolean contain(String st,ArrayList ar)
+    {
+        String ar_nm=st.replace(" ","");
+        for(int i=0;i<ar.size();i++)
+        {
+            String ar_st=ar.get(i).toString().replace(" ","");
+            if(ar_nm.equalsIgnoreCase(ar_st)){
+                return true;
+            }
+        }
+        return false;
+    }
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insertion);
         Intent i=getIntent();
+        MyHelper dpHelper = new MyHelper(this);
+        SQLiteDatabase db = dpHelper.getReadableDatabase();
         cat = i.getExtras().getString("cat");
+        Cursor cursor =dpHelper.alldata(cat);
+
+        while(cursor.moveToNext()) {
+            System.out.println(cursor.getString(cursor.getColumnIndex("name")));
+            nameAr.add(cursor.getString(cursor.getColumnIndex("name")));
+            num.add(cursor.getString(cursor.getColumnIndex("phone")));
+        }
         submit=findViewById(R.id.submit);
         name=findViewById(R.id.name);
         phone=findViewById(R.id.phone);
@@ -159,12 +182,17 @@ public class Insertion extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (phone.getText().toString().length()==10)
+                if(contain(name.getText().toString(),nameAr)||contain(phone.getText().toString(),num))
+                {
+                    Toast.makeText(getApplicationContext(), "Name or Number already existing in "+cat.toUpperCase(), Toast.LENGTH_SHORT)
+                            .show();
+                }
+                else if (phone.getText().toString().length()==10)
                 {
                     alert_Dialog();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "Number must contain 10 digits", Toast.LENGTH_SHORT)
+                    Toast.makeText(getApplicationContext(), "Number must contain 10 digits and Name is required.", Toast.LENGTH_SHORT)
                             .show();
                 }
 

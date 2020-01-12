@@ -72,7 +72,7 @@ public class Section extends Activity {
         MyHelper dpHelper = new MyHelper(this);
         SQLiteDatabase db = dpHelper.getWritableDatabase();
         //Error cause database delete
-        db.execSQL("DELETE FROM callmg WHERE phone='"+num1+"'");
+        db.execSQL("DELETE FROM callmg WHERE phone='"+num1+"' AND category='"+cat+"'");
         System.out.println("Delete");
         db.close();
         dpHelper.close();
