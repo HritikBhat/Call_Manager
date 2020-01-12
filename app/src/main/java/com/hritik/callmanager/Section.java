@@ -1,4 +1,5 @@
 package com.hritik.callmanager;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -17,10 +18,8 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -195,6 +194,7 @@ public class Section extends Activity {
                     Intent i = new Intent(Intent.ACTION_CALL);
                     i.setData(Uri.parse("tel:"+num.get(position)));
                     permit(i,position);
+                    //Toast.makeText(context, num.get(position)+" "+nameAr.get(position)+" selected!", Toast.LENGTH_SHORT).show();
                 }});
 
             FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.fab);
