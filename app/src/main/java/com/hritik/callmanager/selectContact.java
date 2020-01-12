@@ -95,66 +95,68 @@ public class selectContact extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_contact);
-        Intent i=getIntent();
-        //Asks permission to read contact
-        per_readContact();
-        //Retrieve all contact list
-        getContactList();
-        searchc=(EditText)findViewById(R.id.searchc);
-        cat = i.getExtras().getString("cat");
-        lv = (ListView) findViewById(R.id.lv);
-        btnselect = (Button) findViewById(R.id.select);
-        btndeselect = (Button) findViewById(R.id.deselect);
-        done = (Button) findViewById(R.id.next);
+        try {
+            setContentView(R.layout.activity_select_contact);
+            Intent i = getIntent();
+            //Asks permission to read contact
+            per_readContact();
+            //Retrieve all contact list
+            getContactList();
+            searchc = (EditText) findViewById(R.id.searchc);
+            cat = i.getExtras().getString("cat");
+            lv = (ListView) findViewById(R.id.lv);
+            btnselect = (Button) findViewById(R.id.select);
+            btndeselect = (Button) findViewById(R.id.deselect);
+            done = (Button) findViewById(R.id.next);
 
-        modelArrayList = getModel(false);
-        customAdapter = new CustomAdapter(this,modelArrayList);
-        lv.setAdapter(customAdapter);
+            modelArrayList = getModel(false);
+            customAdapter = new CustomAdapter(this, modelArrayList);
+            lv.setAdapter(customAdapter);
 
-        btnselect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                modelArrayList = getModel(true);
-                customAdapter = new CustomAdapter(getApplicationContext(),modelArrayList);
-                lv.setAdapter(customAdapter);
-            }
-        });
-        btndeselect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                modelArrayList = getModel(false);
-                customAdapter = new CustomAdapter(getApplicationContext(),modelArrayList);
-                lv.setAdapter(customAdapter);
-            }
-        });
-        done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                register();
-            }
-        });
-        searchc.addTextChangedListener(new TextWatcher() {
+            btnselect.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    modelArrayList = getModel(true);
+                    customAdapter = new CustomAdapter(getApplicationContext(), modelArrayList);
+                    lv.setAdapter(customAdapter);
+                }
+            });
+            btndeselect.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    modelArrayList = getModel(false);
+                    customAdapter = new CustomAdapter(getApplicationContext(), modelArrayList);
+                    lv.setAdapter(customAdapter);
+                }
+            });
+            done.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    register();
+                }
+            });
+            searchc.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-                // When user changed the Text
-                String text = searchc.getText().toString().toLowerCase(Locale.getDefault());
-                customAdapter.filter(text);
-            }
+                @Override
+                public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                    // When user changed the Text
+                    String text = searchc.getText().toString().toLowerCase(Locale.getDefault());
+                    customAdapter.filter(text);
+                }
 
-            @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-                                          int arg3) {
-                // TODO Auto-generated method stub
+                @Override
+                public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                              int arg3) {
+                    // TODO Auto-generated method stub
 
-            }
+                }
 
-            @Override
-            public void afterTextChanged(Editable arg0) {
-                // TODO Auto-generated method stub
-            }
-        });
+                @Override
+                public void afterTextChanged(Editable arg0) {
+                    // TODO Auto-generated method stub
+                }
+            });
+        }catch (Exception e){e.printStackTrace();}
     }
 
     private ArrayList<Model> getModel(boolean isSelect){

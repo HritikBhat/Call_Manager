@@ -1,18 +1,17 @@
 package com.hritik.callmanager;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class NewCat extends AppCompatActivity {
 
@@ -22,46 +21,47 @@ public class NewCat extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_cat);
+        try {
+            setContentView(R.layout.activity_new_cat);
+            cate = findViewById(R.id.cate);
+            create = findViewById(R.id.create_cat);
 
-        cate = findViewById(R.id.cate);
-        create = findViewById(R.id.create_cat);
+            create.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MyHelper dpHelper = new MyHelper(getApplicationContext());
+                    SQLiteDatabase db = dpHelper.getReadableDatabase();
+                    Cursor cursor = dpHelper.getCategoryNames();
+                    int count_row = 0;
+                    while (cursor.moveToNext()) {
 
-        create.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MyHelper dpHelper = new MyHelper(getApplicationContext());
-                SQLiteDatabase db = dpHelper.getReadableDatabase();
-                Cursor cursor =dpHelper.getCategoryNames();
-                int count_row=0;
-                while(cursor.moveToNext()) {
-
-                    final String cat_name=cursor.getString(cursor.getColumnIndex("cname"));
-                    if (cat_name.equalsIgnoreCase(cate.getText().toString()))
-                    {
-                        Toast.makeText(c, "This group name is already exists!!", Toast.LENGTH_SHORT)
-                                .show();
+                        final String cat_name = cursor.getString(cursor.getColumnIndex("cname"));
+                        if (cat_name.equalsIgnoreCase(cate.getText().toString())) {
+                            Toast.makeText(c, "This group name is already exists!!", Toast.LENGTH_SHORT)
+                                    .show();
+                            count_row++;
+                            return;
+                        }
                         count_row++;
-                        return;
                     }
-                    count_row++;
+                    if (cate.getText().toString().trim().length() < 1) {
+                        Toast.makeText(c, "Name is required!!!", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                    if (count_row >= 10) {
+                        Toast.makeText(c, "Group Limit! Max 10", Toast.LENGTH_SHORT)
+                                .show();
+                    } else {
+                        ContentValues insertValues = new ContentValues();
+                        insertValues.put("cname", cate.getText().toString());
+                        long rows = db.insert("catnm", null, insertValues);
+                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(i);
+                    }
                 }
-                if(cate.getText().toString().trim().length()<1){
-                    Toast.makeText(c, "Name is required!!!", Toast.LENGTH_SHORT)
-                            .show();}
-                if(count_row>=10){
-                    Toast.makeText(c, "Group Limit! Max 10", Toast.LENGTH_SHORT)
-                            .show();
-                }
-
-                else{
-                ContentValues insertValues = new ContentValues();
-                insertValues.put("cname", cate.getText().toString());
-                long rows =db.insert("catnm", null, insertValues);
-                Intent i = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(i);}
-            }
-        });
-
+            });
+        }
+        catch (Exception e)
+        {e.printStackTrace();}
     }
 }

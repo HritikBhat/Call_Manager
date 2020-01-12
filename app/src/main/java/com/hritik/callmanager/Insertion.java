@@ -163,56 +163,54 @@ public class Insertion extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insertion);
-        Intent i=getIntent();
-        MyHelper dpHelper = new MyHelper(this);
-        SQLiteDatabase db = dpHelper.getReadableDatabase();
-        cat = i.getExtras().getString("cat");
-        Cursor cursor =dpHelper.alldata(cat);
+        try {
+            Intent i = getIntent();
+            MyHelper dpHelper = new MyHelper(this);
+            SQLiteDatabase db = dpHelper.getReadableDatabase();
+            cat = i.getExtras().getString("cat");
+            Cursor cursor = dpHelper.alldata(cat);
 
-        while(cursor.moveToNext()) {
-            System.out.println(cursor.getString(cursor.getColumnIndex("name")));
-            nameAr.add(cursor.getString(cursor.getColumnIndex("name")));
-            num.add(cursor.getString(cursor.getColumnIndex("phone")));
-        }
-        submit=findViewById(R.id.submit);
-        name=findViewById(R.id.name);
-        phone=findViewById(R.id.phone);
-        contact=findViewById(R.id.contacts);
-        mcontact=findViewById(R.id.mcontacts);
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(contain(name.getText().toString(),nameAr)||contain(phone.getText().toString(),num))
-                {
-                    Toast.makeText(getApplicationContext(), "Name or Number already existing in "+cat.toUpperCase(), Toast.LENGTH_SHORT)
-                            .show();
-                }
-                else if (phone.getText().toString().length()==10)
-                {
-                    alert_Dialog();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Number must contain 10 digits and Name is required.", Toast.LENGTH_SHORT)
-                            .show();
-                }
+            while (cursor.moveToNext()) {
+                System.out.println(cursor.getString(cursor.getColumnIndex("name")));
+                nameAr.add(cursor.getString(cursor.getColumnIndex("name")));
+                num.add(cursor.getString(cursor.getColumnIndex("phone")));
+            }
+            submit = findViewById(R.id.submit);
+            name = findViewById(R.id.name);
+            phone = findViewById(R.id.phone);
+            contact = findViewById(R.id.contacts);
+            mcontact = findViewById(R.id.mcontacts);
+            submit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (contain(name.getText().toString(), nameAr) || contain(phone.getText().toString(), num)) {
+                        Toast.makeText(getApplicationContext(), "Name or Number already existing in " + cat.toUpperCase(), Toast.LENGTH_SHORT)
+                                .show();
+                    } else if (phone.getText().toString().length() == 10) {
+                        alert_Dialog();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Number must contain 10 digits and Name is required.", Toast.LENGTH_SHORT)
+                                .show();
+                    }
 
-            }
-        });
-        contact.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
-                //Here requestCode means how many contacts you can selects...
-                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-                startActivityForResult(intent,PICK_CONTACT);
-            }
-        });
-        mcontact.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
-                //Here requestCode means how many contacts you can selects...
-                Intent i = new Intent(getApplicationContext(),selectContact.class);
-                i.putExtra("cat", cat);
-                startActivity(i);
-            }
-        });
+                }
+            });
+            contact.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    //Here requestCode means how many contacts you can selects...
+                    Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                    startActivityForResult(intent, PICK_CONTACT);
+                }
+            });
+            mcontact.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    //Here requestCode means how many contacts you can selects...
+                    Intent i = new Intent(getApplicationContext(), selectContact.class);
+                    i.putExtra("cat", cat);
+                    startActivity(i);
+                }
+            });
+        }catch (Exception e){e.printStackTrace();}
     }
     @Override
     public void onActivityResult(int reqCode, int resultCode, Intent data) {
