@@ -8,10 +8,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by hardik on 9/1/17.
@@ -20,12 +23,15 @@ public class CustomAdapter  extends BaseAdapter {
 
     private Context context;
     public static ArrayList<Model> modelArrayList;
+    private ArrayList<Model> arraylist=null;
 
 
     public CustomAdapter(Context context, ArrayList<Model> modelArrayList) {
 
         this.context = context;
         this.modelArrayList = modelArrayList;
+        this.arraylist = new ArrayList<Model>();
+        this.arraylist.addAll(modelArrayList);
 
     }
     @Override
@@ -53,6 +59,22 @@ public class CustomAdapter  extends BaseAdapter {
         return 0;
     }
 
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        modelArrayList.clear();
+        if (charText.length() == 0) {
+            modelArrayList.addAll(arraylist);
+        }
+        else
+        {
+            for (Model wp : arraylist) {
+                if (wp.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    modelArrayList.add(wp);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;

@@ -10,14 +10,20 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class selectContact extends AppCompatActivity {
 
@@ -25,6 +31,7 @@ public class selectContact extends AppCompatActivity {
     private String cat;
     private ArrayList<Model> modelArrayList;
     private CustomAdapter customAdapter;
+    private EditText searchc;
     private Button btnselect, btndeselect, done;
     private  ArrayList<String> ar_name = new ArrayList();
     private  ArrayList<String> ar_phone = new ArrayList();
@@ -97,6 +104,7 @@ public class selectContact extends AppCompatActivity {
         per_readContact();
         //Retrieve all contact list
         getContactList();
+        searchc=(EditText)findViewById(R.id.searchc);
         cat = i.getExtras().getString("cat");
         lv = (ListView) findViewById(R.id.lv);
         btnselect = (Button) findViewById(R.id.select);
@@ -129,8 +137,27 @@ public class selectContact extends AppCompatActivity {
                 register();
             }
         });
+        searchc.addTextChangedListener(new TextWatcher() {
 
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                // When user changed the Text
+                String text = searchc.getText().toString().toLowerCase(Locale.getDefault());
+                customAdapter.filter(text);
+            }
 
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
     }
 
     private ArrayList<Model> getModel(boolean isSelect){

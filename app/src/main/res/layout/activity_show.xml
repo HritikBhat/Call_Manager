@@ -21,8 +21,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="35sp"
-            android:queryHint="Search...."
-            android:textSize="18dp"/>
+            android:hint="Search..."
+            android:textSize="18dp" />
 
         <ImageButton
             android:id="@+id/bin"
