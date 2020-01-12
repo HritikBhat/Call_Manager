@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -27,6 +28,8 @@ public class selectContact extends AppCompatActivity {
     private ListView lv;
     private String cat;
     private ArrayList<Model> modelArrayList;
+    ArrayList<String> nameAr= new ArrayList<String>();
+    ArrayList<String> num= new ArrayList<String>();
     private CustomAdapter customAdapter;
     private EditText searchc;
     private Button btnselect, btndeselect, done;
@@ -73,12 +76,35 @@ public class selectContact extends AppCompatActivity {
             cur.close();
         }
     }
+    private boolean contain(String st,ArrayList ar)
+    {
+        String ar_nm=st.replace(" ","");
+        for(int i=0;i<ar.size();i++)
+        {
+            String ar_st=ar.get(i).toString().replace(" ","");
+            if(ar_nm.equalsIgnoreCase(ar_st)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     private void register()
     {
         MyHelper dpHelper = new MyHelper(getApplicationContext());
         SQLiteDatabase db = dpHelper.getReadableDatabase();
+        Cursor cursor = dpHelper.alldata(cat);
+        while (cursor.moveToNext()) {
+            System.out.println(cursor.getString(cursor.getColumnIndex("name")));
+            nameAr.add(cursor.getString(cursor.getColumnIndex("name")));
+            num.add(cursor.getString(cursor.getColumnIndex("phone")));
+        }
+        int same=0;
         for (int i = 0; i < CustomAdapter.modelArrayList.size(); i++){
+            if (contain(CustomAdapter.modelArrayList.get(i).getName(), nameAr) || contain(CustomAdapter.modelArrayList.get(i).getPhone(), num)) {
+                same+=1;
+                continue;
+            }
             if(CustomAdapter.modelArrayList.get(i).getSelected()) {
                 ContentValues insertValues = new ContentValues();
                 insertValues.put("name", CustomAdapter.modelArrayList.get(i).getName());
@@ -86,6 +112,10 @@ public class selectContact extends AppCompatActivity {
                 insertValues.put("phone",CustomAdapter.modelArrayList.get(i).getPhone().replace("+91","").replace(" ",""));
                 long rows =db.insert("callmg", null, insertValues);
             }
+        }
+        if (same>0){
+            Toast.makeText(getApplicationContext(), "Names or Numbers already existing in " + cat.toUpperCase(), Toast.LENGTH_SHORT)
+                    .show();
         }
         dpHelper.close();
         db.close();
