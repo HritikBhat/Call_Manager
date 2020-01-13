@@ -160,6 +160,16 @@ public class Insertion extends AppCompatActivity {
         }
         return false;
     }
+    private boolean per_readContact(){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_CONTACTS}, 100);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            }
+            return false;
+        }
+        else{return true;}
+    }
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insertion);
@@ -203,17 +213,21 @@ public class Insertion extends AppCompatActivity {
             });
             contact.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                    //Here requestCode means how many contacts you can selects...
-                    Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-                    startActivityForResult(intent, PICK_CONTACT);
+                    if(per_readContact()) {
+                        //Here requestCode means how many contacts you can selects...
+                        Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                        startActivityForResult(intent, PICK_CONTACT);
+                    }
                 }
             });
             mcontact.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     //Here requestCode means how many contacts you can selects...
-                    Intent i = new Intent(getApplicationContext(), selectContact.class);
-                    i.putExtra("cat", cat);
-                    startActivity(i);
+                    if(per_readContact()) {
+                        Intent i = new Intent(getApplicationContext(), selectContact.class);
+                        i.putExtra("cat", cat);
+                        startActivity(i);
+                    }
                 }
             });
         }catch (Exception e){e.printStackTrace();}

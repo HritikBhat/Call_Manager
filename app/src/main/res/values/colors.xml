@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#1C95B1</color>
     <color name="colorAccent">#D81B60</color>
     <color name="taskbarcolor">#5DBCD2</color>
+    <color name="tblue">#2196F3</color>
 </resources>

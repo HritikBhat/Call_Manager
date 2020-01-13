@@ -1,10 +1,8 @@
 package com.hritik.callmanager;
 
-import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -18,7 +16,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -36,13 +33,6 @@ public class selectContact extends AppCompatActivity {
     private  ArrayList<String> ar_name = new ArrayList();
     private  ArrayList<String> ar_phone = new ArrayList();
 
-    private void per_readContact(){
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_CONTACTS}, 100);
-
-        }
-        else{}
-    }
     private void getContactList() {
         ContentResolver cr = getContentResolver();
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
@@ -130,7 +120,7 @@ public class selectContact extends AppCompatActivity {
             setContentView(R.layout.activity_select_contact);
             Intent i = getIntent();
             //Asks permission to read contact
-            per_readContact();
+
             //Retrieve all contact list
             getContactList();
             searchc = (EditText) findViewById(R.id.searchc);
@@ -163,6 +153,8 @@ public class selectContact extends AppCompatActivity {
             done.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    String text = searchc.getText().toString().toLowerCase(Locale.getDefault());
+                    customAdapter.filter("");
                     register();
                 }
             });

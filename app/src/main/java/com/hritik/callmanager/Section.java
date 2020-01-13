@@ -37,6 +37,7 @@ public class Section extends Activity {
     // List view
     ListView lv;
     String cat;
+    FloatingActionButton myFab,helpFab;
     Context context=this;
     // Search EditText
     ImageButton bin;
@@ -243,6 +244,7 @@ public class Section extends Activity {
                                                         .show();
                                             } else if (userPhone.getText().toString().length() == 10) {
                                                 updateContact(start_pos,userName.getText().toString(),userPhone.getText().toString());
+                                                Toast.makeText(getApplicationContext(),"Edit Successfully",Toast.LENGTH_SHORT).show();
                                                 update_listview();
                                             }
                                             else if (userPhone.getText().toString().length() != 10)
@@ -284,7 +286,7 @@ public class Section extends Activity {
                     //Toast.makeText(context, num.get(position)+" "+nameAr.get(position)+" selected!", Toast.LENGTH_SHORT).show();
                 }});
 
-            FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.fab);
+            myFab = (FloatingActionButton) findViewById(R.id.fab);
             myFab.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Intent i = new Intent(getApplicationContext(),Insertion.class);
@@ -310,8 +312,24 @@ public class Section extends Activity {
                         }
                     };
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setMessage("Are you sure you want to delete "+cat+"?").setPositiveButton("Yes", dialogClickListener)
+                    builder.setMessage("Are you sure you want to delete group "+cat+"?").setPositiveButton("Yes", dialogClickListener)
                             .setNegativeButton("No", dialogClickListener).show();
+                }
+            });
+            helpFab = (FloatingActionButton) findViewById(R.id.section_help);
+            helpFab.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    HelpDialog d = new HelpDialog();
+                    final int bk=R.color.white;
+                    final int fg=R.color.black2;
+                    final int tfg=R.color.white;
+                    final int tbk=R.color.tblue;
+                    String title="Group "+cat.toUpperCase()+" Help";
+                    String desc="1)To delete group click on the bin symbol button.\n\n" +
+                            "2)To edit contact,press on the contact for few seconds.\n\n"+
+                            "3)To call contact,click on the respective contact.\n\n"+
+                            "4)To delete contact,swipe the contact irrespective of direction(left or right).";
+                    d.onStartDialog(context,title,desc,bk,fg,tbk,tfg);
                 }
             });
         }

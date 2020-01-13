@@ -56,6 +56,7 @@ public class NewCat extends AppCompatActivity {
                         ContentValues insertValues = new ContentValues();
                         insertValues.put("cname", cate.getText().toString());
                         long rows = db.insert("catnm", null, insertValues);
+                        Toast.makeText(getApplicationContext(),"Group Created Successfully",Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(i);
                     }

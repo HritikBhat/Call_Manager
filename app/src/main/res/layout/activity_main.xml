@@ -79,4 +79,14 @@
         android:clickable="true"
         android:src="@drawable/ic_contact_add"
         app:backgroundTint="@color/taskbarcolor" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|bottom"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        android:src="@drawable/ic_help"
+        app:backgroundTint="@color/taskbarcolor" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

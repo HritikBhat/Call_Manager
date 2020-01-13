@@ -31,12 +31,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList <Button> category= new ArrayList<Button>();
     ArrayList<Integer> lt = new ArrayList<Integer>();
     LinearLayout ll;
-    String newName;
 
-    public String new_Name(){
-
-        return newName;
-    }
     public boolean checkNamesFromD(EditText cate){
         MyHelper dpHelper = new MyHelper(getApplicationContext());
         Cursor cursor = dpHelper.getCategoryNames();
@@ -163,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
                                                         else {
                                                             edit_grp_name(category.get(i2).getText().toString(),userInput.getText().toString());
                                                             refresh_Page();
+                                                            Toast.makeText(getApplicationContext(),"Edit Successfully",Toast.LENGTH_SHORT).show();
                                                         }
 
                                                     }
@@ -182,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
                             } else if (item.getItemId() == R.id.delete) {
                                 delete_grp(category.get(i2).getText().toString());
                                 refresh_Page();
+                                Toast.makeText(getApplicationContext(),"Delete Successfully",Toast.LENGTH_SHORT).show();
                             } else {
                                 return false;
                             }
@@ -226,10 +223,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         refresh_Page();
         FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.addcat);
+        FloatingActionButton helpFab = (FloatingActionButton) findViewById(R.id.help);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(),NewCat.class);
                 startActivity(i);
+            }
+        });
+        helpFab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                HelpDialog d = new HelpDialog();
+                final int bk=R.color.black2;
+                final int fg=R.color.white;
+                final int tfg=R.color.white;
+                final int tbk=R.color.taskbarcolor;
+
+                String title="Home Page Help";
+                String desc="1)To delete or edit group name press on the group button for few seconds to receive popup menu.\n\n" +
+                        "2)For creation of group,click on + symbol button on the bottom right side.";
+                d.onStartDialog(context,title,desc,bk,fg,tbk,tfg);
             }
         });
     }
