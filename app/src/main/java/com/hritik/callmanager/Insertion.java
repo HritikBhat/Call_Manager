@@ -188,11 +188,17 @@ public class Insertion extends AppCompatActivity {
                                 .show();
                     } else if (phone.getText().toString().length() == 10) {
                         alert_Dialog();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Number must contain 10 digits and Name is required.", Toast.LENGTH_SHORT)
+                    }
+                    else if (phone.getText().toString().length() != 10)
+                    {
+                        Toast.makeText(getApplicationContext(), "Number must contain 10 digits.", Toast.LENGTH_SHORT)
                                 .show();
                     }
-
+                    else if (name.getText().toString().length() < 1)
+                    {
+                        Toast.makeText(getApplicationContext(), "Name is required.", Toast.LENGTH_SHORT)
+                                .show();
+                    }
                 }
             });
             contact.setOnClickListener(new View.OnClickListener() {

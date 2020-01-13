@@ -47,6 +47,7 @@ public class NewCat extends AppCompatActivity {
                     if (cate.getText().toString().trim().length() < 1) {
                         Toast.makeText(c, "Name is required!!!", Toast.LENGTH_SHORT)
                                 .show();
+                        return;
                     }
                     if (count_row >= 10) {
                         Toast.makeText(c, "Group Limit! Max 10", Toast.LENGTH_SHORT)

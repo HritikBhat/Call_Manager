@@ -15,12 +15,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
@@ -115,6 +117,30 @@ public class Section extends Activity {
         lv.setAdapter(adapter);
 
     }
+    public void updateContact(int pos,String newname,String newphone){
+        MyHelper dpHelper = new MyHelper(this);
+        SQLiteDatabase db = dpHelper.getWritableDatabase();
+        //Error cause database delete
+        String ph=num.get(pos);
+        db.execSQL("UPDATE callmg SET name='"+newname+"' "+"WHERE phone='"+ph+"'");
+        db.execSQL("UPDATE callmg SET phone='"+newphone+"' "+"WHERE phone='"+ph+"'");
+        System.out.println("Edit Contact Name");
+        db.close();
+        dpHelper.close();
+    }
+    public boolean contain(int pos,String st,ArrayList ar)
+    {
+        String ar_nm=st.replace(" ","");
+        for(int i=0;i<ar.size();i++)
+        {
+            if(i==pos){continue;}
+            String ar_st=ar.get(i).toString().replace(" ","");
+            if(ar_nm.equalsIgnoreCase(ar_st)){
+                return true;
+            }
+        }
+        return false;
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -186,6 +212,67 @@ public class Section extends Activity {
                 }
             });
             lv.setClickable(true);
+            lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                               int pos, long id) {
+
+                    LayoutInflater li = LayoutInflater.from(context);
+                    View promptsView = li.inflate(R.layout.dialog_contact_new_name, null);
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            context);
+
+                    // set prompts.xml to alertdialog builder
+                    alertDialogBuilder.setView(promptsView);
+                    final int start_pos=pos;
+                    final EditText userName = (EditText) promptsView
+                            .findViewById(R.id.editContactNewName);
+                    userName.setText(nameAr.get(pos));
+                    final EditText userPhone = (EditText) promptsView
+                            .findViewById(R.id.editContactPhone);
+                    userPhone.setText(num.get(pos));
+                    alertDialogBuilder
+                            .setCancelable(false)
+                            .setPositiveButton("OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog,int id) {
+                                            // get user input and set it to result
+                                            // edit text
+                                            if (contain(start_pos,userName.getText().toString(), nameAr) || contain(start_pos,userPhone.getText().toString(), num)) {
+                                                Toast.makeText(getApplicationContext(), "Name or Number already existing in " + cat.toUpperCase(), Toast.LENGTH_SHORT)
+                                                        .show();
+                                            } else if (userPhone.getText().toString().length() == 10) {
+                                                updateContact(start_pos,userName.getText().toString(),userPhone.getText().toString());
+                                                update_listview();
+                                            }
+                                            else if (userPhone.getText().toString().length() != 10)
+                                            {
+                                                Toast.makeText(getApplicationContext(), "Number must contain 10 digits.", Toast.LENGTH_SHORT)
+                                                        .show();
+                                            }
+                                            else if (userName.getText().toString().length() < 1)
+                                            {
+                                                Toast.makeText(getApplicationContext(), "Name is required.", Toast.LENGTH_SHORT)
+                                                        .show();
+                                            }
+
+                                        }
+                                    })
+                            .setNegativeButton("Cancel",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog,int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+
+                    // create alert dialog
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+
+                    // show it
+                    alertDialog.show();
+                    return true;
+                }
+            });
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position,
