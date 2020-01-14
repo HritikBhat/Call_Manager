@@ -31,6 +31,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Section extends Activity {
@@ -239,23 +240,35 @@ public class Section extends Activity {
                                         public void onClick(DialogInterface dialog,int id) {
                                             // get user input and set it to result
                                             // edit text
+                                            char ph_first=userPhone.getText().toString().charAt(0);
                                             if (contain(start_pos,userName.getText().toString(), nameAr) || contain(start_pos,userPhone.getText().toString(), num)) {
                                                 Toast.makeText(getApplicationContext(), "Name or Number already existing in " + cat.toUpperCase(), Toast.LENGTH_SHORT)
                                                         .show();
-                                            } else if (userPhone.getText().toString().length() == 10) {
+                                            }
+                                            else if(isEmergencyNumber(userPhone.getText().toString())){
                                                 updateContact(start_pos,userName.getText().toString(),userPhone.getText().toString());
                                                 Toast.makeText(getApplicationContext(),"Edit Successfully",Toast.LENGTH_SHORT).show();
                                                 update_listview();
+                                            }
+                                            else if(ph_first=='*'){
+                                                updateContact(start_pos,userName.getText().toString(),userPhone.getText().toString());
+                                                Toast.makeText(getApplicationContext(),"Edit Successfully",Toast.LENGTH_SHORT).show();
+                                                update_listview();
+                                            }
+                                            else if (userName.getText().toString().length() < 1)
+                                            {
+                                                Toast.makeText(getApplicationContext(), "Name is required.", Toast.LENGTH_SHORT)
+                                                        .show();
                                             }
                                             else if (userPhone.getText().toString().length() != 10)
                                             {
                                                 Toast.makeText(getApplicationContext(), "Number must contain 10 digits.", Toast.LENGTH_SHORT)
                                                         .show();
                                             }
-                                            else if (userName.getText().toString().length() < 1)
-                                            {
-                                                Toast.makeText(getApplicationContext(), "Name is required.", Toast.LENGTH_SHORT)
-                                                        .show();
+                                            else if (userPhone.getText().toString().length() == 10) {
+                                                updateContact(start_pos,userName.getText().toString(),userPhone.getText().toString());
+                                                Toast.makeText(getApplicationContext(),"Edit Successfully",Toast.LENGTH_SHORT).show();
+                                                update_listview();
                                             }
 
                                         }
@@ -335,4 +348,20 @@ public class Section extends Activity {
         }
         catch (Exception e){e.printStackTrace();}
 
-    }}
+    }
+    private boolean isEmergencyNumber(String num) {
+        ArrayList<String> emergency_no= new ArrayList<String>(
+                Arrays.asList("112","100","101", "102","1091","108","139","1091","1070"));
+        //ArrayList<String> emergency_name= new ArrayList<String>(
+        //    Arrays.asList("NATIONAL EMERGENCY NUMBER","POLICE","FIRE", "AMBULANCE","Women Helpline","Disaster Management Services","Railway Enquiry","Senior Citizen Helpline","Natural Calamities Helpline"));
+        for(int i=0;i<emergency_no.size();i++)
+        {
+            if (num.equals(emergency_no.get(i)))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+}
