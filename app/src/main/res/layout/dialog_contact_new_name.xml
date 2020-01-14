@@ -30,8 +30,7 @@
     <EditText
         android:id="@+id/editContactNewName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimary">
+        android:layout_height="wrap_content">
         <requestFocus />
     </EditText>
     <TextView
@@ -47,7 +46,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <requestFocus />
 
     </EditText>
 
