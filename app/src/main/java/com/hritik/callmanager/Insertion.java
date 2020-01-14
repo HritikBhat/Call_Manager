@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
@@ -23,9 +22,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Insertion extends AppCompatActivity {
-    Button submit,contact,mcontact;
+    Button submit,mcontact;
     EditText name,phone;
     String cat;
     ArrayList<String> nameAr= new ArrayList<String>();
@@ -188,35 +188,34 @@ public class Insertion extends AppCompatActivity {
             submit = findViewById(R.id.submit);
             name = findViewById(R.id.name);
             phone = findViewById(R.id.phone);
-            contact = findViewById(R.id.contacts);
+            //contact = findViewById(R.id.contacts);
             mcontact = findViewById(R.id.mcontacts);
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    char ph_first=phone.getText().toString().charAt(0);
                     if (contain(name.getText().toString(), nameAr) || contain(phone.getText().toString(), num)) {
                         Toast.makeText(getApplicationContext(), "Name or Number already existing in " + cat.toUpperCase(), Toast.LENGTH_SHORT)
                                 .show();
-                    } else if (phone.getText().toString().length() == 10) {
+                    }
+                    else if(isEmergencyNumber(phone.getText().toString())){
                         alert_Dialog();
                     }
-                    else if (phone.getText().toString().length() != 10)
+                    else if(ph_first=='*'){
+                        alert_Dialog();
+                    }
+                    else if (phone.getText().toString().trim().length() != 10)
                     {
                         Toast.makeText(getApplicationContext(), "Number must contain 10 digits.", Toast.LENGTH_SHORT)
                                 .show();
                     }
-                    else if (name.getText().toString().length() < 1)
+                    else if (name.getText().toString().trim().length()< 1)
                     {
                         Toast.makeText(getApplicationContext(), "Name is required.", Toast.LENGTH_SHORT)
                                 .show();
                     }
-                }
-            });
-            contact.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    if(per_readContact()) {
-                        //Here requestCode means how many contacts you can selects...
-                        Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-                        startActivityForResult(intent, PICK_CONTACT);
+                    else if (phone.getText().toString().trim().length() == 10) {
+                        alert_Dialog();
                     }
                 }
             });
@@ -232,38 +231,20 @@ public class Insertion extends AppCompatActivity {
             });
         }catch (Exception e){e.printStackTrace();}
     }
-    @Override
-    public void onActivityResult(int reqCode, int resultCode, Intent data) {
-        super.onActivityResult(reqCode, resultCode, data);
 
-        switch (reqCode) {
-            case (PICK_CONTACT) :
-                if (resultCode == RESULT_OK) {
-                    if(ask_per_conread()){
-                    Uri contactData = data.getData();
-                    Cursor c =  getContentResolver().query(contactData, null, null, null, null);
-                    if (c.moveToFirst()) {
-                        String id =c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
-
-                        String hasPhone =c.getString(c.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
-
-                        if (hasPhone.equalsIgnoreCase("1")) {
-                            Cursor phones = getContentResolver().query(
-                                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,
-                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ id,
-                                    null, null);
-                            phones.moveToFirst();
-                            String cNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                            System.out.println("number is:"+cNumber);
-                            String name_p = c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                            name.setText(name_p);
-                            phone.setText(cNumber.replace("+91","").replace(" ",""));
-                        }
-
-                    }
-                    }
-                }
-                break;
+    private boolean isEmergencyNumber(String num) {
+        ArrayList<String> emergency_no= new ArrayList<String>(
+                Arrays.asList("112","100","101", "102","1091","108","139","1091","1070"));
+        //ArrayList<String> emergency_name= new ArrayList<String>(
+            //    Arrays.asList("NATIONAL EMERGENCY NUMBER","POLICE","FIRE", "AMBULANCE","Women Helpline","Disaster Management Services","Railway Enquiry","Senior Citizen Helpline","Natural Calamities Helpline"));
+        for(int i=0;i<emergency_no.size();i++)
+        {
+            if (num.equals(emergency_no.get(i)))
+            {
+                return true;
+            }
         }
+        return false;
     }
+
 }
