@@ -23,6 +23,8 @@ import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Insertion extends AppCompatActivity {
     Button submit,mcontact;
@@ -204,7 +206,7 @@ public class Insertion extends AppCompatActivity {
                     else if(ph_first=='*'){
                         alert_Dialog();
                     }
-                    else if (phone.getText().toString().trim().length() != 10)
+                    else if (!isNum(phone.getText().toString().trim()))
                     {
                         Toast.makeText(getApplicationContext(), "Number must contain 10 digits.", Toast.LENGTH_SHORT)
                                 .show();
@@ -214,7 +216,7 @@ public class Insertion extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Name is required.", Toast.LENGTH_SHORT)
                                 .show();
                     }
-                    else if (phone.getText().toString().trim().length() == 10) {
+                    else if (isNum(phone.getText().toString().trim())){
                         alert_Dialog();
                     }
                 }
@@ -231,7 +233,11 @@ public class Insertion extends AppCompatActivity {
             });
         }catch (Exception e){e.printStackTrace();}
     }
-
+    private boolean isNum(String ph){
+        Pattern pattern = Pattern.compile("\\d{10}$");
+        Matcher matcher = pattern.matcher(ph);
+        return matcher.matches();
+    }
     private boolean isEmergencyNumber(String num) {
         ArrayList<String> emergency_no= new ArrayList<String>(
                 Arrays.asList("112","100","101", "102","1091","108","139","1091","1070"));

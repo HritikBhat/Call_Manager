@@ -33,6 +33,8 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Section extends Activity {
     // List view
@@ -255,9 +257,9 @@ public class Section extends Activity {
                                                 Toast.makeText(getApplicationContext(),"Edit Successfully",Toast.LENGTH_SHORT).show();
                                                 update_listview();
                                             }
-                                            else if (userName.getText().toString().length() < 1)
+                                            else if (!isNum(userPhone.getText().toString().trim()))
                                             {
-                                                Toast.makeText(getApplicationContext(), "Name is required.", Toast.LENGTH_SHORT)
+                                                Toast.makeText(getApplicationContext(), "Number must contain 10 digits.", Toast.LENGTH_SHORT)
                                                         .show();
                                             }
                                             else if (userPhone.getText().toString().length() != 10)
@@ -265,12 +267,11 @@ public class Section extends Activity {
                                                 Toast.makeText(getApplicationContext(), "Number must contain 10 digits.", Toast.LENGTH_SHORT)
                                                         .show();
                                             }
-                                            else if (userPhone.getText().toString().length() == 10) {
+                                            else if (isNum(userPhone.getText().toString().trim())) {
                                                 updateContact(start_pos,userName.getText().toString(),userPhone.getText().toString());
                                                 Toast.makeText(getApplicationContext(),"Edit Successfully",Toast.LENGTH_SHORT).show();
                                                 update_listview();
                                             }
-
                                         }
                                     })
                             .setNegativeButton("Cancel",
@@ -363,5 +364,9 @@ public class Section extends Activity {
         }
         return false;
     }
-
+    private boolean isNum(String ph){
+        Pattern pattern = Pattern.compile("\\d{10}$");
+        Matcher matcher = pattern.matcher(ph);
+        return matcher.matches();
+    }
 }

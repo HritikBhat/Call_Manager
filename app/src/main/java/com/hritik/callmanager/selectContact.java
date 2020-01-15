@@ -33,37 +33,29 @@ public class selectContact extends AppCompatActivity {
     private  ArrayList<String> ar_name = new ArrayList();
     private  ArrayList<String> ar_phone = new ArrayList();
 
+    private static final String[] PROJECTION= new String[] {
+            ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
+            ContactsContract.Contacts.DISPLAY_NAME,
+            ContactsContract.CommonDataKinds.Phone.NUMBER
+    };
     private void getContactList() {
         ContentResolver cr = getContentResolver();
-        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
-                null, null, null, null);
+        Cursor cursor = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, PROJECTION, null, null, null);
+        if (cursor != null) {
+            try {
+                final int nameIndex = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+                final int numberIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
 
-        if ((cur != null ? cur.getCount() : 0) > 0) {
-            while (cur != null && cur.moveToNext()) {
-                String id = cur.getString(
-                        cur.getColumnIndex(ContactsContract.Contacts._ID));
-                String name = cur.getString(cur.getColumnIndex(
-                        ContactsContract.Contacts.DISPLAY_NAME));
-
-                if (cur.getInt(cur.getColumnIndex(
-                        ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
-                    Cursor pCur = cr.query(
-                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                            null,
-                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                            new String[]{id}, null);
-                    while (pCur.moveToNext()) {
-                        String phoneNo = pCur.getString(pCur.getColumnIndex(
-                                ContactsContract.CommonDataKinds.Phone.NUMBER));
-                        ar_name.add(name);
-                        ar_phone.add(phoneNo);
-                    }
-                    pCur.close();
+                String name, number;
+                while (cursor.moveToNext()) {
+                    name = cursor.getString(nameIndex);
+                    number = cursor.getString(numberIndex);
+                    ar_name.add(name);
+                    ar_phone.add(number);
                 }
+            } finally {
+                cursor.close();
             }
-        }
-        if(cur!=null){
-            cur.close();
         }
     }
     private boolean contain(String st,ArrayList ar)
