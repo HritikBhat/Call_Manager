@@ -200,21 +200,21 @@ public class Insertion extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Name or Number already existing in " + cat.toUpperCase(), Toast.LENGTH_SHORT)
                                 .show();
                     }
-                    else if(isEmergencyNumber(phone.getText().toString())){
-                        alert_Dialog();
-                    }
-                    else if(ph_first=='*'){
-                        alert_Dialog();
+                    else if (name.getText().toString().trim().length()< 1)
+                    {
+                        Toast.makeText(getApplicationContext(), "Name is required.", Toast.LENGTH_SHORT)
+                                .show();
                     }
                     else if (!isNum(phone.getText().toString().trim()))
                     {
                         Toast.makeText(getApplicationContext(), "Number must contain 10 digits.", Toast.LENGTH_SHORT)
                                 .show();
                     }
-                    else if (name.getText().toString().trim().length()< 1)
-                    {
-                        Toast.makeText(getApplicationContext(), "Name is required.", Toast.LENGTH_SHORT)
-                                .show();
+                    else if(isEmergencyNumber(phone.getText().toString())){
+                        alert_Dialog();
+                    }
+                    else if(ph_first=='*'){
+                        alert_Dialog();
                     }
                     else if (isNum(phone.getText().toString().trim())){
                         alert_Dialog();

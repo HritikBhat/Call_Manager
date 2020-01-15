@@ -247,6 +247,16 @@ public class Section extends Activity {
                                                 Toast.makeText(getApplicationContext(), "Name or Number already existing in " + cat.toUpperCase(), Toast.LENGTH_SHORT)
                                                         .show();
                                             }
+                                            else if (!isNum(userPhone.getText().toString().trim()))
+                                            {
+                                                Toast.makeText(getApplicationContext(), "Number must contain 10 digits.", Toast.LENGTH_SHORT)
+                                                        .show();
+                                            }
+                                            else if (userName.getText().toString().trim().length()< 1)
+                                            {
+                                                Toast.makeText(getApplicationContext(), "Name is required.", Toast.LENGTH_SHORT)
+                                                        .show();
+                                            }
                                             else if(isEmergencyNumber(userPhone.getText().toString())){
                                                 updateContact(start_pos,userName.getText().toString(),userPhone.getText().toString());
                                                 Toast.makeText(getApplicationContext(),"Edit Successfully",Toast.LENGTH_SHORT).show();
@@ -256,16 +266,6 @@ public class Section extends Activity {
                                                 updateContact(start_pos,userName.getText().toString(),userPhone.getText().toString());
                                                 Toast.makeText(getApplicationContext(),"Edit Successfully",Toast.LENGTH_SHORT).show();
                                                 update_listview();
-                                            }
-                                            else if (!isNum(userPhone.getText().toString().trim()))
-                                            {
-                                                Toast.makeText(getApplicationContext(), "Number must contain 10 digits.", Toast.LENGTH_SHORT)
-                                                        .show();
-                                            }
-                                            else if (userPhone.getText().toString().length() != 10)
-                                            {
-                                                Toast.makeText(getApplicationContext(), "Number must contain 10 digits.", Toast.LENGTH_SHORT)
-                                                        .show();
                                             }
                                             else if (isNum(userPhone.getText().toString().trim())) {
                                                 updateContact(start_pos,userName.getText().toString(),userPhone.getText().toString());
