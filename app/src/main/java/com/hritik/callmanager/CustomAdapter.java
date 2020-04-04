@@ -52,6 +52,10 @@ public class CustomAdapter  extends BaseAdapter {
         return modelArrayList.get(position);
     }
 
+    public String getPhone(int position) {
+        return modelArrayList.get(position).getPhone();
+    }
+
     @Override
     public long getItemId(int position) {
         return 0;

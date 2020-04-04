@@ -52,7 +52,7 @@ public class Section extends Activity {
     // ArrayList for Listview
     ArrayList<HashMap<String, String>> productList;
 
-    protected  void permit(Intent i, int position){
+    protected  void permit(Intent i){
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,new String[]{android.Manifest.permission.CALL_PHONE}, 100);
             return;
@@ -229,12 +229,14 @@ public class Section extends Activity {
                     // set prompts.xml to alertdialog builder
                     alertDialogBuilder.setView(promptsView);
                     final int start_pos=pos;
+                    String nm=adapter.getItem(pos);
+                    int newpos=nameAr.indexOf(nm);
                     final EditText userName = (EditText) promptsView
                             .findViewById(R.id.editContactNewName);
-                    userName.setText(nameAr.get(pos));
+                    userName.setText(nameAr.get(newpos));
                     final EditText userPhone = (EditText) promptsView
                             .findViewById(R.id.editContactPhone);
-                    userPhone.setText(num.get(pos));
+                    userPhone.setText(num.get(newpos));
                     alertDialogBuilder
                             .setCancelable(false)
                             .setPositiveButton("OK",
@@ -293,11 +295,12 @@ public class Section extends Activity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position,
                                         long id) {
-
+                    String nm=adapter.getItem(position);
                     Intent i = new Intent(Intent.ACTION_CALL);
-                    i.setData(Uri.parse("tel:"+num.get(position)));
-                    permit(i,position);
-                    //Toast.makeText(context, num.get(position)+" "+nameAr.get(position)+" selected!", Toast.LENGTH_SHORT).show();
+                    int newpos=nameAr.indexOf(nm);
+                    i.setData(Uri.parse("tel:"+num.get(newpos)));
+                    permit(i);
+                    Toast.makeText(context, nm+"  "+num.get(newpos)+" "+nameAr.get(newpos)+" selected!", Toast.LENGTH_LONG).show();
                 }});
 
             myFab = (FloatingActionButton) findViewById(R.id.fab);
