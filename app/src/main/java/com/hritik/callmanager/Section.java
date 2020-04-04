@@ -300,7 +300,7 @@ public class Section extends Activity {
                     int newpos=nameAr.indexOf(nm);
                     i.setData(Uri.parse("tel:"+num.get(newpos)));
                     permit(i);
-                    Toast.makeText(context, nm+"  "+num.get(newpos)+" "+nameAr.get(newpos)+" selected!", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, nm+"  "+num.get(newpos)+" "+nameAr.get(newpos)+" selected!", Toast.LENGTH_LONG).show();
                 }});
 
             myFab = (FloatingActionButton) findViewById(R.id.fab);
